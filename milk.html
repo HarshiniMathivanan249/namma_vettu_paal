@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Namma vettu Paal</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        /* Carousel Styles */
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .carousel-images {
+            display: flex;
+            height: 100%;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1); /* Smooth easing effect */
+        }
+
+        .carousel-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex: 0 0 100%;
+        }
+
+        /* Navigation Buttons */
+        .carousel-buttons {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .carousel-button {
+            pointer-events: all;
+            background-color: rgba(0, 0, 0, 0.6);
+            border: none;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 50%;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .carousel-button:hover {
+            transform: scale(1.1);
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Dots for Navigation */
+        .carousel-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: #ffffff;
+            transform: scale(1.2);
+        }
+           /* Logo */
+           .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 120px;
+            z-index: 2;
+        }
+
+        /* Menu Icon */
+        .menu-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+            z-index: 2;
+        }
+
+        /* Overlay Menu */
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(133, 210, 217, 0.95);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            z-index: 3;
+        }
+
+        .menu-links {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 80%;
+        }
+
+        .menu-section {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+        }
+
+        .menu-section h2 {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            margin-right: 20px;
+            font-size: 1.5em;
+            text-align: left;
+        }
+
+        .menu-section ul {
+            list-style-type: none;
+        }
+
+        .menu-section ul li {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+
+        /* Social Media Links */
+        .social-icons {
+            margin-top: 40px;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+            font-size: 1.5em;
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Close Button */
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Open Overlay Menu */
+        .overlay-menu.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Homepage Section with Carousel -->
+    <div class="carousel" id="carousel">
+        <img src="C:\Users\HARSHINI\Downloads\logo_milk-removebg-preview.png" alt="Namma vettu Paal" class="logo">
+
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="carousel-images" id="carouselImages">
+            <img src="C:/Users/HARSHINI/Downloads/glass-pitchers-fresh-milk-with-delicious-cookies-placed-marble-table.jpg" alt="Cookies and Milk">
+            <img src="C:/Users/HARSHINI/Downloads/view-frame-with-dairy-products.jpg" alt="Dairy Products">
+            <img src="C:/Users/HARSHINI/Downloads/top-view-assortment-cheese-with-copy-space.jpg" alt="Assorted Cheeses">
+            <img src="C:/Users/HARSHINI/Downloads/cows-eating-lush-grass-green-field-front-fuji-mountain-japan.jpg" alt="Cows Grazing">
+            <img src="C:/Users/HARSHINI/Downloads/michael-starkie-nXHVdV_K9n4-unsplash.jpg" alt="Close-Up Cow">
+        </div>
+        <div class="carousel-buttons">
+            <button class="carousel-button" onclick="prevSlide()">&#10094;</button>
+            <button class="carousel-button" onclick="nextSlide()">&#10095;</button>
+        </div>
+        <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+     <!-- Overlay Menu -->
+     <div class="overlay-menu" id="menu">
+        <div class="close-btn" onclick="toggleMenu()">×</div>
+        <div class="menu-links">
+            <div class="menu-section">
+                <h2>EXPLORE US</h2>
+                <ul>
+                    <li>HOME</li>
+                    <li>ABOUT US</li>
+                    <li>MILK PRODUCTS</li>
+                    <li>CONTACT</li>
+                </ul>
+            </div>
+            <div class="menu-section">
+                <h2>MILK PRODUCTS</h2>
+                <ul>
+                    <li>Milk (Whole, Skimmed, Low-fat, Flavored)</li>
+                    <li>Butter</li>
+                    <li>Yogurt</li>
+                    <li>Paneer</li>
+                    <li>Cheddar Cheese</li>
+                    <li>Ice Cream</li>
+                    <li>Condensed Milk</li>
+                    <li>Milkshakes</li>
+                    <li>Ghee</li>
+                    <li>Rasgulla</li>
+                </ul>
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="#">&#xf09a;</a>
+            <a href="#">&#xf099;</a>
+            <a href="#">&#xf0e1;</a>
+            <a href="#">&#xf0d5;</a>
+            <a href="#">&#xf16d;</a>
+        </div>
+    </div>
+
+
+
+    <script>
+        function toggleMenu() {
+    document.getElementById('menu').classList.toggle('open');
+}
+
+
+        const carouselImages = document.getElementById('carouselImages');
+        const dotsContainer = document.getElementById('carouselDots');
+        const totalImages = carouselImages.children.length;
+        let index = 0;
+        let isReversing = false; // Direction of carousel movement
+        const delay = 3000; // Delay for each slide (3 seconds)
+
+        // Create dots dynamically
+        for (let i = 0; i < totalImages; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateCarousel() {
+            carouselImages.style.transition = 'transform 1s cubic-bezier(0.77, 0, 0.175, 1)';
+            carouselImages.style.transform = `translateX(-${index * 100}%)`;
+
+            dots.forEach(dot => dot.classList.remove('active'));
+            if (index >= 0 && index < totalImages) {
+                dots[index].classList.add('active');
+            }
+        }
+
+        function nextSlide() {
+            if (isReversing) {
+                index--;
+                if (index < 0) {
+                    index = 1;
+                    isReversing = false;
+                }
+            } else {
+                index++;
+                if (index >= totalImages) {
+                    index = totalImages - 2;
+                    isReversing = true;
+                }
+            }
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            isReversing = !isReversing; // Toggle direction
+            nextSlide(); // Use the same slide logic
+        }
+
+        // Auto-slide every 3 seconds
+        setInterval(nextSlide, delay);
+
+        // Initial setup
+        updateCarousel();
+    </script>
+</body>
+
+</html>
